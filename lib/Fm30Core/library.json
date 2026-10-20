@@ -1,0 +1,7 @@
+{
+  "name": "Fm30Core",
+  "version": "0.1.0",
+  "description": "Portable FM30 controller protocol logic: text sanitizer, command validator, serial link queue. No Arduino dependencies, so it also builds on a PC for tests.",
+  "frameworks": "*",
+  "platforms": "*"
+}

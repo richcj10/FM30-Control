@@ -1,0 +1,29 @@
+{
+  "_readme": "Copy to data/setup.json (git-ignored), fill in, then Upload Filesystem Image. The ESP applies it at the next boot and deletes it from the board. Leave out any line you don't need; \"\" means none.",
+
+  "wifi": { "ssid": "MyNetwork", "pass": "wifi-password" },
+
+  "hostname": "fm30",
+  "lock_pass": "control-password",
+  "http_user": "admin",
+  "http_pass": "",
+  "ota_pass": "ota-password",
+
+  "mqtt": {
+    "host": "192.168.1.10",
+    "port": 1883,
+    "user": "",
+    "pass": "",
+    "base": "fm30",
+    "ha_discovery": true,
+    "ha_prefix": "homeassistant",
+    "allow_locked": false
+  },
+
+  "lcd": [
+    {},
+    { "top": "STUDIO A", "bottom": "Live and local" },
+    { "top": "", "bottom": "Requests: 555-0123" },
+    {}
+  ]
+}

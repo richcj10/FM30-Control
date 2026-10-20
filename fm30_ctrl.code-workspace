@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "../fm30_ctrl"
+		},
+		{
+			"name": "FM30-Controller",
+			"path": "."
+		}
+	],
+	"settings": {}
+}
