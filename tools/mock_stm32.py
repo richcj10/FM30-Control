@@ -42,6 +42,15 @@ UI_PAGES, UI_MSG_SLOTS, UI_MSG_LEN = 8, 4, 48
 U6_F10, U6_CAL = [881, 931, 981, 1031, 1071], [948, 1194, 1412, 1676, 1914]
 VT_F10, VT_VOLT = [881, 981, 1074], [1.72, 3.80, 6.46]
 
+DACDBG = [
+    "DAC1 CR=0000101F SR=00000800 DOR1=800 DHR12R1=800 MCR=00008000",
+    "  CR: EN1=1 TEN1=1 TSEL1=7 (7=TIM6) DMAEN1=1 DMAUDRIE1=0 CEN1=0",
+    "  SR: DAC1RDY=1 DORSTAT1=0 DMAUDR1=0  MCR: MODE1=0 HFSEL=2 (2=>160MHz)",
+    "DMA1_Ch2 CCR=000030B3 (EN=1 CIRC=1) CNDTR=301  DMAMUX1_Ch1 CCR=00000006 (REQ_ID=6, want 6)",
+    "PA4 MODER=3 (3=analog)  AHB1ENR=00000005 (DMA1EN=1 DMAMUX1EN=1)  AHB2ENR=00010001 (DAC1EN=1)",
+    "dsp load=31% overruns=0 dac_test=0 hal_err=00000000",
+]
+
 DEFAULTS = dict(f10=881, power_target=0xE1F, tx=False, volume=128, balance=0, u6_trim=0,
                 vt_scale=3.0, pi=0x1234, pty=0, tp=0, ta=0, ms=1, stereo=1, ps="FM30    ",
                 rt="", rds_enable=True, level=400, phase=0, lcd_on=True, lcd_page=0, lcd_rot=0xFF)
@@ -54,6 +63,8 @@ HELP = [
     "U6TRIM <n>  U6 <code>|AUTO   deviation compensation trim/override",
     "VTSCALE <x>           Vtune = Vadc * x (default 3.0)",
     "RDS ON|OFF  RDSFREE ON|OFF  RDSLEVEL <0-2047>  RDSPHASE <deg>",
+    "DACDBG                DAC/DMA register dump (read-only)",
+    "DACTEST 0|1|2         RDS DAC: 0 normal, 1 DC 2048 (DMA off), 2 1 kHz full-scale sine",
     "PI <hex>  PTY <0-31>  TP|TA|MS|STEREO <0|1>",
     "PS <text>  RT <text>  (RT with no text clears it)",
     "STATUS [period_s]     JSON status; period 0 = off",
@@ -322,6 +333,16 @@ class Stm32Model:
             else:
                 self.level = v
                 o.append(f"OK RDSLEVEL {v}")
+        elif cmd == "DACDBG":
+            # register values as on a healthy board (DAC running from TIM6 via DMA)
+            o.extend(DACDBG)
+            o.append("OK")
+        elif cmd == "DACTEST":
+            v, end = c_strtol(rest)
+            if end == 0 or not 0 <= v <= 2:
+                o.append("ERR DACTEST 0|1|2")
+            else:
+                o.append(f"OK DACTEST {v}")
         elif cmd == "RDSPHASE":
             v, _ = c_strtol(rest)
             if not -180 <= v <= 180:
@@ -604,6 +625,9 @@ def selftest():
     check("SAVE", "OK SAVED")
     check("DEFAULTS", "OK DEFAULTS (not saved)")
     check("HELP", "OK")
+    check("DACDBG", "OK")
+    check("DACTEST 2", "OK DACTEST 2")
+    check("DACTEST 3", "ERR DACTEST 0|1|2")
     check("BOGUS", "ERR unknown command (HELP)")
 
     st = json.loads(m.exec("STATUS")[0][0])

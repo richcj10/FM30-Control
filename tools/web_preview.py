@@ -23,7 +23,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from mock_stm32 import Stm32Model  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
-PROTECTED = {"FREQ", "POWER", "U6TRIM", "U6", "VTSCALE", "RDSLEVEL", "DEFAULTS"}
+PROTECTED = {"FREQ", "POWER", "U6TRIM", "U6", "VTSCALE", "RDSLEVEL", "DACTEST", "DEFAULTS"}
 
 lock = threading.Lock()
 model = Stm32Model()

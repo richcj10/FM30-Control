@@ -184,7 +184,7 @@ void Link::handleLine(char *line)
         log("STM32 %s", line);
         return;
     }
-    if (inFlight_ && startsWithWord(q_[head_].line, "HELP")) {
+    if (inFlight_ && (startsWithWord(q_[head_].line, "HELP") || startsWithWord(q_[head_].line, "DACDBG"))) {
         size_t n = strlen(line);
         if (bodyLen_ + n + 2 < kBodyLen) {
             memcpy(body_ + bodyLen_, line, n);

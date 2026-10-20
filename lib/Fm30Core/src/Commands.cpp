@@ -354,6 +354,8 @@ bool parseCommand(const char *input, Command &out, char *err, size_t errLen)
     if (!strcmp(cmd, "SAVE")) return noArgCmd(out, Cmd::Save, "SAVE", rest, err, errLen);
     if (!strcmp(cmd, "DEFAULTS")) return noArgCmd(out, Cmd::Defaults, "DEFAULTS", rest, err, errLen);
     if (!strcmp(cmd, "HELP") || !strcmp(cmd, "?")) return noArgCmd(out, Cmd::Help, "HELP", rest, err, errLen);
+    if (!strcmp(cmd, "DACDBG")) return noArgCmd(out, Cmd::DacDbg, "DACDBG", rest, err, errLen);
+    if (!strcmp(cmd, "DACTEST")) return intCmd(out, Cmd::DacTest, "DACTEST", rest, 0, 2, err, errLen);
     return fail(err, errLen, "unknown command (HELP)");
 }
 
@@ -361,7 +363,7 @@ bool isProtected(Cmd cmd)
 {
     switch (cmd) {
     case Cmd::Freq: case Cmd::Power: case Cmd::U6Trim: case Cmd::U6: case Cmd::VtScale:
-    case Cmd::RdsLevel: case Cmd::Defaults:
+    case Cmd::RdsLevel: case Cmd::DacTest: case Cmd::Defaults:
         return true;
     default:
         return false;
@@ -378,7 +380,7 @@ const char *expectedReplyWord(const char *line, char *buf, size_t bufLen)
     buf[n] = 0;
     if (!strcmp(buf, "STATUS")) return nullptr;
     if (!strcmp(buf, "SAVE")) return "SAVED";
-    if (!strcmp(buf, "VTSCALE") || !strcmp(buf, "HELP") || !strcmp(buf, "?")) return "";
+    if (!strcmp(buf, "VTSCALE") || !strcmp(buf, "HELP") || !strcmp(buf, "?") || !strcmp(buf, "DACDBG")) return "";
     return buf;
 }
 

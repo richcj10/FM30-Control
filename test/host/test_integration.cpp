@@ -160,11 +160,17 @@ int main(int argc, char **argv)
         CHECK(d.outcome == Outcome::Ok);
     }
 
-    // HELP: 14 text lines, then OK.
+    // HELP: 16 text lines, then OK.
     Done h = run(link, "HELP");
     int lines = 0;
     for (char c : h.body) lines += c == '\n';
-    CHECK(h.outcome == Outcome::Ok && lines == 14);
+    CHECK(h.outcome == Outcome::Ok && lines == 16);
+
+    // DACDBG: register dump lines, then a bare OK.
+    Done dd = run(link, "DACDBG");
+    lines = 0;
+    for (char c : dd.body) lines += c == '\n';
+    CHECK(dd.outcome == Outcome::Ok && lines == 6);
 
     // Sanitized text lands as plain ASCII; the STATUS JSON shows it.
     run(link, "RT Bj\xC3\xB6rk \xE2\x80\x93 J\xC3\xB3ga | \"live\"");

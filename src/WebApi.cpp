@@ -163,7 +163,7 @@ void execute(const Command &c)
         d["ok"] = r.outcome == Outcome::Ok;
         d["reply"] = r.line;
         if (r.outcome == Outcome::Err) code = 422;
-        if (c.cmd == Cmd::Help) {
+        if (c.cmd == Cmd::Help || c.cmd == Cmd::DacDbg) {
             JsonArray a = d["help"].to<JsonArray>();
             int start = 0, nl;
             while ((nl = r.body.indexOf('\n', start)) >= 0) {

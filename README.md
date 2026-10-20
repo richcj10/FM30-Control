@@ -140,7 +140,7 @@ The tabs are:
 
 | Password | Protects |
 |---|---|
-| **Control password** | changing frequency, power and the tuning internals (FREQ, POWER, U6TRIM, U6, VTSCALE, RDSLEVEL, DEFAULTS), plus the settings, reboot and forget-WiFi. Checked on the ESP, not just hidden in the page. TX on/off, audio, RDS text, display messages and SAVE stay open. |
+| **Control password** | changing frequency, power and the tuning internals (FREQ, POWER, U6TRIM, U6, VTSCALE, RDSLEVEL, DACTEST, DEFAULTS), plus the settings, reboot and forget-WiFi. Checked on the ESP, not just hidden in the page. TX on/off, audio, RDS text, display messages and SAVE stay open. |
 | **Web password** | the whole page and API, with HTTP basic auth (user `admin` by default). |
 | **OTA password** | firmware updates over WiFi. |
 
@@ -194,6 +194,7 @@ curl -X POST --data-urlencode "text=Now playing: $ARTIST - $TITLE" http://fm30-x
 - `RDS`, `RDSFREE`, `RDSLEVEL`, `RDSPHASE`, `PI`, `PTY`, `TP`/`TA`/`MS`/`STEREO`, `PS`, `RT`
 - `LCD ON|OFF|PAGE|MSG|ROTATE`
 - `STATUS [n]`, `SAVE`, `DEFAULTS`, `HELP`
+- `DACDBG` (RDS DAC register dump), `DACTEST 0|1|2` (DAC bench test: normal, DC mid-scale, 1 kHz tone)
 
 ## MQTT
 

@@ -34,7 +34,7 @@ enum class Outcome : uint8_t { Ok, Err, Timeout };
 struct Reply {
     Outcome outcome;
     const char *line;   // reply line ("OK ...", "ERR ...", JSON) or "" on timeout
-    const char *body;   // extra lines before the OK (HELP), '\n'-separated
+    const char *body;   // extra lines before the OK (HELP, DACDBG), '\n'-separated
 };
 
 class Link {
@@ -43,7 +43,7 @@ public:
 
     static constexpr size_t kQueueLen = 10;
     static constexpr size_t kRxLen = 1024;     // STATUS JSON can reach ~620 bytes
-    static constexpr size_t kBodyLen = 1024;   // HELP text
+    static constexpr size_t kBodyLen = 1024;   // HELP / DACDBG text
     static constexpr uint32_t kTimeoutMs = 500;
     static constexpr uint32_t kGapMs = 5;
 

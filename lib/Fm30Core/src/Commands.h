@@ -27,6 +27,7 @@ enum class Cmd : uint8_t {
     Rds, RdsFree, RdsLevel, RdsPhase, Pi, Pty, Flag, Ps, Rt,
     LcdOnOff, LcdPage, LcdMsg, LcdRotate,
     Status, Save, Defaults, Help,
+    DacDbg, DacTest,           // RDS DAC bench diagnostics (STM32 cli.c)
 };
 
 struct Command {
@@ -53,7 +54,7 @@ bool buildFreq(const char *mhz, Command &out, char *err, size_t errLen);
 
 // Commands behind the control password: anything that changes what goes on
 // air at RF level (frequency, power, deviation/tuning internals, RDS
-// injection) and DEFAULTS, which resets frequency and power.
+// injection, DACTEST tone) and DEFAULTS, which resets frequency and power.
 bool isProtected(Cmd cmd);
 
 // The word the STM32 echoes after "OK" for this command line: "FREQ" for

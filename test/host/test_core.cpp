@@ -149,6 +149,10 @@ static void test_commands()
     CHECK(cmd("SAVE now")[0] == '!');
     CHECK_STR(cmd("?"), "HELP");
     CHECK_STR(cmd("DEFAULTS"), "DEFAULTS");
+    CHECK_STR(cmd("dacdbg"), "DACDBG");
+    CHECK(cmd("DACDBG 1")[0] == '!');
+    CHECK_STR(cmd("DACTEST 2"), "DACTEST 2");
+    CHECK(cmd("DACTEST 3")[0] == '!');
     CHECK(cmd("BOGUS 1")[0] == '!');
     CHECK(cmd("")[0] == '!');
 
@@ -164,14 +168,17 @@ static void test_commands()
     CHECK_STR(c.line, "POWER 0%");
 
     CHECK(isProtected(Cmd::Freq) && isProtected(Cmd::Power) && isProtected(Cmd::VtScale) &&
-          isProtected(Cmd::U6) && isProtected(Cmd::U6Trim) && isProtected(Cmd::RdsLevel) && isProtected(Cmd::Defaults));
+          isProtected(Cmd::U6) && isProtected(Cmd::U6Trim) && isProtected(Cmd::RdsLevel) && isProtected(Cmd::Defaults) &&
+          isProtected(Cmd::DacTest));
     CHECK(!isProtected(Cmd::Tx) && !isProtected(Cmd::Rt) && !isProtected(Cmd::LcdMsg) && !isProtected(Cmd::Save) &&
-          !isProtected(Cmd::Vol) && !isProtected(Cmd::Status));
+          !isProtected(Cmd::Vol) && !isProtected(Cmd::Status) && !isProtected(Cmd::DacDbg));
 
     char buf[12];
     CHECK_STR(expectedReplyWord("FREQ 98.1", buf, sizeof buf), "FREQ");
     CHECK_STR(expectedReplyWord("SAVE", buf, sizeof buf), "SAVED");
     CHECK_STR(expectedReplyWord("VTSCALE 3.000", buf, sizeof buf), "");
+    CHECK_STR(expectedReplyWord("DACDBG", buf, sizeof buf), "");
+    CHECK_STR(expectedReplyWord("DACTEST 1", buf, sizeof buf), "DACTEST");
     CHECK(expectedReplyWord("STATUS 2", buf, sizeof buf) == nullptr);
 }
 
